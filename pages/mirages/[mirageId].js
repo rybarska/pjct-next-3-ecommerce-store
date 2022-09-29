@@ -2,9 +2,9 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { products } from '../../database/products';
+import { mirages } from '../../database/mirages';
 
-const productStyles = css`
+const mirageStyles = css`
   border-radius: 15px;
   border: 1px solid #ccc;
   padding: 20px;
@@ -18,49 +18,51 @@ const productStyles = css`
   }
 `;
 
-export default function Products(props) {
+export default function Mirages(props) {
   if (props.error) {
     return (
       <div>
         <Head>
-          <title>Product not found</title>
-          <meta name="description" content="Product not found" />
+          <title>Mirage not found</title>
+          <meta name="description" content="Mirage not found" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <h1>{props.error}</h1>
-        Sorry, try the <Link href="/products">products page</Link>
+        Sorry, try the <Link href="/mirages">products page</Link>
       </div>
     );
   }
 
   return (
-    <div css={productStyles}>
+    <div css={mirageStyles}>
       <Head>
         <title>
-          {props.product.name}, the {props.product.type}
+          {props.mirage.name}, the {props.mirage.type}
         </title>
         <meta
           name="description"
-          content={`${props.product.name} is a ${props.product.type} with a ${props.product.accessory}`}
+          content={`${props.mirage.name} is a ${props.mirage.type} with a ${props.mirage.accessory}`}
         />
       </Head>
-      <h2>{props.product.name}</h2>
+      <h2>{props.mirage.name}</h2>
       <Image
-        src={`/${props.product.id}-${props.product.name.toLowerCase()}.jpeg`}
+        src={`/images/${
+          props.mirage.id
+        }-${props.mirage.name.toLowerCase()}.jpeg`}
         alt=""
         width="400"
         height="400"
       />
-      <div>Id: {props.product.id}</div>
-      <div>Type: {props.product.type}</div>
-      <div>Accessory: {props.product.accessory}</div>
+      <div>Id: {props.mirage.id}</div>
+      <div>Type: {props.mirage.type}</div>
+      <div>Accessory: {props.mirage.accessory}</div>
     </div>
   );
 }
 
 export function getServerSideProps(context) {
   // Retrieve the product ID from the URL
-  const productId = parseInt(context.query.productId);
+  const mirageId = parseInt(context.query.mirageId);
 
   // Finding the product
   //
@@ -69,22 +71,22 @@ export function getServerSideProps(context) {
   // will run every time. Using a database
   // like PostgreSQL will allow you to do this
   // in a nicer way.
-  const foundProduct = products.find((product) => {
-    return product.id === productId;
+  const foundMirage = mirages.find((mirage) => {
+    return mirage.id === mirageId;
   });
 
-  if (typeof foundAnimal === 'undefined') {
+  if (typeof foundMirage === 'undefined') {
     context.res.statusCode = 404;
     return {
       props: {
-        error: 'Product not found',
+        error: 'Mirage not found',
       },
     };
   }
 
   return {
     props: {
-      product: foundProduct,
+      mirage: foundMirage,
     },
   };
 }

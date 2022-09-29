@@ -18,6 +18,7 @@ export default function Header() {
       <nav css={navStyles}>
         <Link href="/">Home</Link>
         <Link href="/products">Products</Link>
+        <Link href="/mirages">Mirages</Link>
         <Link href="/cart">Cart</Link>
       </nav>
     </header>

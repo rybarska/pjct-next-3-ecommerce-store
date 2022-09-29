@@ -7,5 +7,5 @@ const footerStyles = css`
 `;
 
 export default function Footer() {
-  return <footer css={footerStyles}>copyright Products 2023</footer>;
+  return <footer css={footerStyles}>copyright Mirages 2023</footer>;
 }

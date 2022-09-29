@@ -29,7 +29,7 @@ export default function CookieBanner() {
 
   return (
     <div css={bannerStyles(isBannerOpen)}>
-      {JSON.stringify(isBannerOpen)}
+      {/* {JSON.stringify(isBannerOpen)} */}
       <span>Please Accept our cookie policy</span>{' '}
       <button
         onClick={() => {
