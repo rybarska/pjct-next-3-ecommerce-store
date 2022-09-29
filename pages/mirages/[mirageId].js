@@ -41,7 +41,7 @@ export default function Mirages(props) {
         </title>
         <meta
           name="description"
-          content={`${props.mirage.name} is a ${props.mirage.type} with a ${props.mirage.accessory}`}
+          content={`${props.mirage.name} is a ${props.mirage.price} with a ${props.mirage.description}`}
         />
       </Head>
       <h2>{props.mirage.name}</h2>
@@ -52,8 +52,8 @@ export default function Mirages(props) {
         height="400"
       />
       <div>Id: {props.mirage.id}</div>
-      <div>Type: {props.mirage.type}</div>
-      <div>Accessory: {props.mirage.accessory}</div>
+      <div>Price: {props.mirage.price}</div>
+      <div>Description: {props.mirage.description}</div>
     </div>
   );
 }

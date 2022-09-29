@@ -48,8 +48,8 @@ export default function Mirages(props) {
               </a>
             </Link>
 
-            <div>Type: {mirage.type}</div>
-            <div>Accessory: {mirage.accessory}</div>
+            <div>Price: {mirage.price}</div>
+            <div>Description: {mirage.description}</div>
           </div>
         );
       })}
