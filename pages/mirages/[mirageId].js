@@ -28,7 +28,7 @@ export default function Mirages(props) {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <h1>{props.error}</h1>
-        Sorry, try the <Link href="/mirages">products page</Link>
+        Sorry, try the <Link href="/mirages">mirages page</Link>
       </div>
     );
   }
@@ -46,11 +46,9 @@ export default function Mirages(props) {
       </Head>
       <h2>{props.mirage.name}</h2>
       <Image
-        src={`/images/${
-          props.mirage.id
-        }-${props.mirage.name.toLowerCase()}.jpeg`}
+        src={`/${props.mirage.id}-${props.mirage.name.toLowerCase()}.jpeg`}
         alt=""
-        width="400"
+        width="600"
         height="400"
       />
       <div>Id: {props.mirage.id}</div>
@@ -61,10 +59,10 @@ export default function Mirages(props) {
 }
 
 export function getServerSideProps(context) {
-  // Retrieve the product ID from the URL
+  // Retrieve the mirage ID from the URL
   const mirageId = parseInt(context.query.mirageId);
 
-  // Finding the product
+  // Finding the mirage
   //
   // Note: This is not the most efficient way
   // of finding the single animal, because it

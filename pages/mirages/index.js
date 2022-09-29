@@ -42,8 +42,8 @@ export default function Mirages(props) {
                 <Image
                   src={`/${mirage.id}-${mirage.name.toLowerCase()}.jpeg`}
                   alt=""
-                  width="150"
-                  height="150"
+                  width="300"
+                  height="200"
                 />
               </a>
             </Link>
