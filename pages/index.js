@@ -11,6 +11,14 @@ export default function Home() {
       </Head>
 
       <div>Home</div>
+              <a>
+                <Image
+                  src={`/eye.png`}
+                  alt="eye with colors"
+                  width="400"
+                  height="200"
+                />
+              </a>
     </>
   );
 }

@@ -9,9 +9,7 @@ const footerStyles = css`
 export default function Footer() {
   return (
     <footer css={footerStyles}>
-      “To lose something is an illusion because everything we own is just a
-      mirage! And you, you cannot lose something which is not yours!” ― Mehmet
-      Murat ildan
+      “everything we own is just a mirage!” ― Mehmet Murat ildan
     </footer>
   );
 }
