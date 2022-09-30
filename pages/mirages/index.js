@@ -47,9 +47,12 @@ export default function Mirages(props) {
                 />
               </a>
             </Link>
-
-            <div>Price: {mirage.price}</div>
             <div>Description: {mirage.description}</div>
+            <div>Price: {mirage.price}</div>
+            {/* <div>Count:
+              {fruit.icon} ⭐️ {fruit.stars}
+        </div> */}
+
           </div>
         );
       })}

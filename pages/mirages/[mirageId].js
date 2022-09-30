@@ -52,8 +52,64 @@ export default function Mirages(props) {
         height="400"
       />
       <div>Id: {props.mirage.id}</div>
-      <div>Price: {props.mirage.price}</div>
       <div>Description: {props.mirage.description}</div>
+      <div>Price: {props.mirage.price}</div>
+      <button onClick={() => {
+          // getting the value of the cookie stars
+          const currentCookieValue = getParsedCookie('stars');
+
+          // if there is no cookie we initialize the value with a -1
+          if (!currentCookieValue) {
+            setStringifiedCookie('stars', [
+              { id: props.singleFruit.id, stars: -1 },
+            ]);
+            return;
+          }
+
+          // find the object that match the id of the page
+          const foundCookie = currentCookieValue.find(
+            (cookieFruitObject) =>
+              cookieFruitObject.id === props.singleFruit.id,
+          );
+
+          // if a object is not found i add a new object
+          if (!foundCookie) {
+            currentCookieValue.push({ id: props.singleFruit.id, stars: -1 });
+          } else {
+            // if a object is found i update the stars
+            foundCookie.stars--;
+          }
+          // set the new value of the cookie
+          setStringifiedCookie('stars', currentCookieValue);
+        }}><img height="12px" width="18px" src={`/${props.mirage.id}-${props.mirage.name.toLowerCase()}.jpeg`} alt="my image"/> - </button>
+        <button onClick={() => {
+          // getting the value of the cookie stars
+          const currentCookieValue = getParsedCookie('stars');
+
+          // if there is no cookie we initialize the value with a -1
+          if (!currentCookieValue) {
+            setStringifiedCookie('stars', [
+              { id: props.singleFruit.id, stars: -1 },
+            ]);
+            return;
+          }
+
+          // find the object that match the id of the page
+          const foundCookie = currentCookieValue.find(
+            (cookieFruitObject) =>
+              cookieFruitObject.id === props.singleFruit.id,
+          );
+
+          // if a object is not found i add a new object
+          if (!foundCookie) {
+            currentCookieValue.push({ id: props.singleFruit.id, stars: -1 });
+          } else {
+            // if a object is found i update the stars
+            foundCookie.stars--;
+          }
+          // set the new value of the cookie
+          setStringifiedCookie('stars', currentCookieValue);
+        }}><img height="12px" width="18px" src={`/${props.mirage.id}-${props.mirage.name.toLowerCase()}.jpeg`} alt="my image"/> + </button>
     </div>
   );
 }
