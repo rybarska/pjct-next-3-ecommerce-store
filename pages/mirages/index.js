@@ -3,6 +3,10 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { mirages } from '../../database/mirages';
+import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
+import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
+
 
 const mirageStyles = css`
   border-radius: 15px;
@@ -18,7 +22,9 @@ const mirageStyles = css`
   }
 `;
 
+
 export default function Mirages(props) {
+  const [amount, setAmount] = useState(0);
   console.log('props', props);
   return (
     <>
@@ -48,10 +54,9 @@ export default function Mirages(props) {
               </a>
             </Link>
             <div>Description: {mirage.description}</div>
-            <div>Price: {mirage.price}</div>
-            {/* <div>counts:
-              {mirage.id} 🔮 {mirage.counts}
-        </div> */}
+            <div>Price (μ€): {mirage.price}</div>
+          <div>Amount: 🔮 {amount}
+        </div>
 
           </div>
         );

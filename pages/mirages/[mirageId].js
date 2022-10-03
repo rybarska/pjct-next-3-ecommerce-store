@@ -3,9 +3,12 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { mirages } from '../../database/mirages';
+import Cookies from 'js-cookie';
 import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
+import { useEffect, useState } from 'react';
 
 const mirageStyles = css`
+
   border-radius: 15px;
   border: 1px solid #ccc;
   padding: 20px;
@@ -33,6 +36,7 @@ export default function Mirages(props) {
       </div>
     );
   }
+  const [amount, setAmount] = useState(0);
 
   return (
     <div css={mirageStyles}>
@@ -54,7 +58,8 @@ export default function Mirages(props) {
       />
       <div>Id: {props.foundMirage.id}</div>
       <div>Description: {props.foundMirage.description}</div>
-      <div>Price: {props.foundMirage.price}</div>
+      <div>Price (μ€): {props.foundMirage.price}</div>
+      <div>Amount: 🔮 {amount}</div>
       <button onClick={() => {
           // getting the value of the cookie counts
           const currentCookieValue = getParsedCookie('counts');
@@ -62,7 +67,7 @@ export default function Mirages(props) {
           // if there is no cookie we initialize the value with a -1
           if (!currentCookieValue) {
             setStringifiedCookie('counts', [
-              { id: props.foundMirage.id, counts: -1 },
+              { id: props.foundMirage.id, counts: 0 },
             ]);
             return;
           }
@@ -75,8 +80,10 @@ export default function Mirages(props) {
 
           // if a object is not found i add a new object
           if (!foundCookie) {
-            currentCookieValue.push({ id: props.foundMirage.id, counts: -1 });
-          } else {
+            currentCookieValue.push({ id: props.foundMirage.id, counts: 0 });
+          }
+          else if ( foundCookie.counts === 0) {}
+          else {
             // if a object is found i update the counts
             foundCookie.counts--;
           }

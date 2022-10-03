@@ -48,5 +48,5 @@ export const mirages = [
     price: '999999',
     description: "the sun appearing in shape of the greek letter omega; the lower part is an inverted image produced by refraction by a layer of warmer and less dense air close to the ocean surface",
   },
-  { id: 8, name: 'Sundog', price: '999999 μ€', description: "colored spots of light that develop due to the refraction of light through ice crystals" },
+  { id: 8, name: 'Sundog', price: '999999', description: "colored spots of light that develop due to the refraction of light through ice crystals" },
 ];
