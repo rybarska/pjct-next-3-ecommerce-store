@@ -49,8 +49,8 @@ export default function Mirages(props) {
             </Link>
             <div>Description: {mirage.description}</div>
             <div>Price: {mirage.price}</div>
-            {/* <div>Count:
-              {fruit.icon} ⭐️ {fruit.stars}
+            {/* <div>counts:
+              {mirage.id} 🔮 {mirage.counts}
         </div> */}
 
           </div>
