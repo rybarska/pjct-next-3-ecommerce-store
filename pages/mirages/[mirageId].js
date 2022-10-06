@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { mirages } from '../../database/mirages';
-import Cookies from 'js-cookie';
 import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
 import { useEffect, useState } from 'react';
 
@@ -88,7 +87,9 @@ export default function Mirages(props) {
             foundCookie.counts--;
           }
           // set the new value of the cookie
-          setStringifiedCookie('counts', currentCookieValue);
+          setStringifiedCookie('counts', currentCookieValue
+          );
+          setAmount(foundCookie.counts);
         }}><img height="12px" width="18px" src={`/${props.foundMirage.id}-${props.foundMirage.name.toLowerCase()}.jpeg`} alt="my image"/> - </button>
         <button onClick={() => {
           // getting the value of the cookie counts
@@ -117,6 +118,7 @@ export default function Mirages(props) {
           }
           // set the new value of the cookie
           setStringifiedCookie('counts', currentCookieValue);
+          setAmount(foundCookie.counts);
         }}><img height="12px" width="18px" src={`/${props.foundMirage.id}-${props.foundMirage.name.toLowerCase()}.jpeg`} alt="my image"/> + </button>
     </div>
   );

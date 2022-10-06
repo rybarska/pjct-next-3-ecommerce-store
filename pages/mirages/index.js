@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { mirages } from '../../database/mirages';
 import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
-import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 
 
