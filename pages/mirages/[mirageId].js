@@ -21,6 +21,8 @@ const mirageStyles = css`
   }
 `;
 
+
+
 export default function Mirages(props) {
   if (props.error) {
     return (
@@ -36,6 +38,9 @@ export default function Mirages(props) {
     );
   }
   const [amount, setAmount] = useState(0);
+
+  const totalPrice =  props.foundMirage.price * amount;
+
 
   return (
     <div css={mirageStyles}>
@@ -57,48 +62,34 @@ export default function Mirages(props) {
       />
       <div>Id: {props.foundMirage.id}</div>
       <div>Description: {props.foundMirage.description}</div>
+      <br></br>
       <div>Price (μ€): {props.foundMirage.price}</div>
-      <div>Amount: 🔮 {amount}</div>
+      <div>Total price (μ€): {totalPrice}</div>
+      <br></br>
+      <div>Amount:</div>
+      <div> 🔮 {amount}</div>
+      <div>
       <button onClick={() => {
-          // getting the value of the cookie counts
-          const currentCookieValue = getParsedCookie('counts');
-
-          // if there is no cookie we initialize the value with a -1
-          if (!currentCookieValue) {
-            setStringifiedCookie('counts', [
-              { id: props.foundMirage.id, counts: 0 },
-            ]);
+          if (amount===0) {
             return;
           }
-
-          // find the object that match the id of the page
-          const foundCookie = currentCookieValue.find(
-            (cookieMirageObject) =>
-              cookieMirageObject.id === props.foundMirage.id,
-          );
-
-          // if a object is not found i add a new object
-          if (!foundCookie) {
-            currentCookieValue.push({ id: props.foundMirage.id, counts: 0 });
-          }
-          else if ( foundCookie.counts === 0) {}
-          else {
-            // if a object is found i update the counts
-            foundCookie.counts--;
-          }
-          // set the new value of the cookie
-          setStringifiedCookie('counts', currentCookieValue
-          );
-          setAmount(foundCookie.counts);
-        }}><img height="12px" width="18px" src={`/${props.foundMirage.id}-${props.foundMirage.name.toLowerCase()}.jpeg`} alt="my image"/> - </button>
+          if (amount>0) {
+            setAmount(amount - 1) }
+          }}> -
+        </button>
         <button onClick={() => {
+          setAmount(amount + 1)
+        }}> + </button></div>
+    <br></br>
+    <br></br>
+    <button onClick={() => {
           // getting the value of the cookie counts
           const currentCookieValue = getParsedCookie('counts');
 
           // if there is no cookie we initialize the value with a 1
           if (!currentCookieValue) {
             setStringifiedCookie('counts', [
-              { id: props.foundMirage.id, counts: 1 },
+              { id: props.foundMirage.id, counts: amount },
             ]);
             return;
           }
@@ -111,16 +102,17 @@ export default function Mirages(props) {
 
           // if a object is not found i add a new object
           if (!foundCookie) {
-            currentCookieValue.push({ id: props.foundMirage.id, counts: 1 });
+            currentCookieValue.push({ id: props.foundMirage.id, counts: amount });
           } else {
             // if a object is found i update the counts
-            foundCookie.counts++;
+            foundCookie.counts= foundCookie.counts + amount;
           }
           // set the new value of the cookie
           setStringifiedCookie('counts', currentCookieValue);
-          setAmount(foundCookie.counts);
-        }}><img height="12px" width="18px" src={`/${props.foundMirage.id}-${props.foundMirage.name.toLowerCase()}.jpeg`} alt="my image"/> + </button>
+
+        }}><img height="50px" width="75px" src={`/${props.foundMirage.id}-${props.foundMirage.name.toLowerCase()}.jpeg`} alt="my image"/><br></br>Add to Cart</button>
     </div>
+
   );
 }
 
