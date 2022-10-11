@@ -13,16 +13,20 @@ const navStyles = css`
 `;
 
 export default function Header(props) {
+  let totalItemsInCart = props.cookieState
+    ? props.cookieState.reduce(function (previousValue, currentValue) {
+        return previousValue + currentValue.counts;
+      }, 0)
+    : 0;
 
   return (
     <header>
       <nav css={navStyles}>
         <Link href="/">Home</Link>
-        <Link href="/products">Products</Link>
         <Link href="/mirages">Mirages</Link>
         <Link href="/fruits">Fruits</Link>
         <Link href="/cart">Cart </Link>
-        <Link href="/testCart">Test Cart </Link>
+        {totalItemsInCart}
       </nav>
     </header>
   );

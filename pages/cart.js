@@ -3,9 +3,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 import { mirages } from '../database/mirages';
-
+import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 
 const mirageStyles = css`
   border-radius: 15px;
@@ -23,12 +22,13 @@ const mirageStyles = css`
 
 export default function Cart(props) {
   const currentCookieValue = getParsedCookie('cookies');
-  console.log(currentCookieValue);
-  //console.log('props', props);
+
+  //console.log(currentCookieValue);
+  console.log('props', props);
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Cart</title>
         <meta name="description" content="Overview of the mirages" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -39,23 +39,21 @@ export default function Cart(props) {
         return (
           <div key={`mirage-${mirage.id}`} css={mirageStyles}>
             <h3>
-
-                <Image
-                  src={`/${mirage.id}-${mirage.name.toLowerCase()}.jpeg`}
-                  alt=""
-                  width="60"
-                  height="40"
-                />  {mirage.name}
- </h3>
- <div>Number of items: 🔮 {mirage.counts} </div>
- <div>Price per item (μ€): {mirage.price}</div>
- <div>Total (μ€): {(mirage.price * mirage.counts)}</div>
-
-
-
+              <Image
+                src={`/${mirage.id}-${mirage.name.toLowerCase()}.jpeg`}
+                alt=""
+                width="60"
+                height="40"
+              />{' '}
+              {mirage.name}
+            </h3>
+            <div>Number of items: 🔮 {mirage.counts} </div>
+            <div>Price per item (μ€): {mirage.price}</div>
+            <div>Total per all items (μ€): {mirage.price * mirage.counts}</div>
           </div>
         );
       })}
+      <h2>Total price (μ€): </h2>
     </>
   );
 }
@@ -76,7 +74,6 @@ export async function getServerSideProps(context) {
       counts: array.counts,
     };
   });
-
 
   return {
     props: {

@@ -1,36 +1,47 @@
 import { css, Global } from '@emotion/react';
+import { useEffect, useState } from 'react';
 import CookieBanner from '../components/CookieBanner';
 import Layout from '../components/Layout';
-import { useEffect, useState } from 'react';
 import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 
-{/* useEffect(() => {
-  function getAllCookies(cookies) {
-  const currentCookieValue = getParsedCookie(cookies);
-  const [cookieState, setCookieState] = useState(0);
-}
-}, [cookies])
-
-useEffect(() => {
+/* useEffect(() => {
   function setAllCookies(cookies) {
   const [cookieState, setCookieState] = useState(0);
   const currentCookieValue = getParsedCookie(cookies);
 }
-}, [cookies]) */}
+}, [cookies]) */
 
-function MyApp({ Component, pageProps }) {
-  const [amount, setAmount] = useState();
-  const [foundCookie, setFoundCookie] = useState();
-  const [counts, setCounts] = useState();
-  const [cookieState, setCookieState] = useState(0);
-console.log(cookieState);
+function MyApp({ Component, pageProps, props }) {
+  const [cookieState, setCookieState] = useState();
+  //const [updatedCookies, setUpdatedCookies] = useState();
 
+  console.log(cookieState);
+
+  // this is to update state on first render when state is empty
   useEffect(() => {
-   // function getAllCookies(cookies) {
     const currentCookieValue = getParsedCookie('cookies');
     setCookieState(currentCookieValue);
-  //}
-  }, [counts])
+  }, []);
+
+  // to update the cookie every time state changes
+  // this shiuld run every time cookieState is updated
+  useEffect(() => {
+    function setAllCookies() {
+      // do this only if cookie state is defined
+      if (typeof cookieState !== 'undefined') {
+        const newCookieValue = cookieState;
+        setStringifiedCookie('cookies', newCookieValue);
+      }
+    }
+    setAllCookies();
+  }, [cookieState]);
+
+  /* useEffect(() => {
+    function setAllCookies(cookies) {
+      const [cookieState, setCookieState] = useState(0);
+      const currentCookieValue = getParsedCookie(cookies);
+    }
+  }, [cookies]); */
 
   return (
     <>
@@ -51,20 +62,12 @@ console.log(cookieState);
         `}
       />
       <CookieBanner>cookie banner</CookieBanner>
-      <Layout amount = {amount}
-      setAmount = {setAmount}
-      foundCookie = {foundCookie}
-      setFoundCookie = {setFoundCookie}>
-
-
-
-        <Component {...pageProps}
-        amount = {amount}
-        setAmount = {setAmount}
-        foundCookie = {foundCookie}
-        setFoundCookie = {setFoundCookie}
-
-         />
+      <Layout cookieState={cookieState} setCookieState={setCookieState}>
+        <Component
+          {...pageProps}
+          cookieState={cookieState}
+          setCookieState={setCookieState}
+        />
       </Layout>
     </>
   );
