@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { mirages } from '../../database/mirages';
-import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
+import { mirages } from '../database/mirages';
+import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 import { useEffect, useState } from 'react';
 
 const mirageStyles = css`
@@ -24,22 +24,10 @@ const mirageStyles = css`
 
 
 export default function Mirage(props) {
-  if (props.error) {
-    return (
-      <div>
-        <Head>
-          <title>Mirage not found</title>
-          <meta name="description" content="Mirage not found" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <h1>{props.error}</h1>
-        Sorry, try the <Link href="/mirages">mirages page</Link>
-      </div>
-    );
-  }
+
   const [amount, setAmount] = useState(0);
 
-  const totalPrice =  props.foundMirage.price * amount;
+  // const totalPrice =  props.foundMirage.price * amount;
 
 
   return (

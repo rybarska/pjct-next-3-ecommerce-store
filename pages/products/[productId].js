@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { products } from '../../database/products';
 
+
 const productStyles = css`
   border-radius: 15px;
   border: 1px solid #ccc;

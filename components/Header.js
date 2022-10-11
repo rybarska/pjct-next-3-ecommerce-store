@@ -12,7 +12,8 @@ const navStyles = css`
   }
 `;
 
-export default function Header() {
+export default function Header(props) {
+
   return (
     <header>
       <nav css={navStyles}>
@@ -20,7 +21,8 @@ export default function Header() {
         <Link href="/products">Products</Link>
         <Link href="/mirages">Mirages</Link>
         <Link href="/fruits">Fruits</Link>
-        <Link href="/cart">Cart</Link>
+        <Link href="/cart">Cart </Link>
+        <Link href="/testCart">Test Cart </Link>
       </nav>
     </header>
   );
