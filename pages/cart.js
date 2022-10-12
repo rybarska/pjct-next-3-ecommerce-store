@@ -22,9 +22,25 @@ const mirageStyles = css`
 
 export default function Cart(props) {
   const currentCookieValue = getParsedCookie('cookies');
+  const totalItemsInCart = props.cookieState
+    ? props.cookieState.reduce(function (previousValue, currentValue) {
+        return previousValue + currentValue.counts;
+      }, 0)
+    : 0;
+  const totalPriceInCart = totalItemsInCart * 999999;
 
-  //console.log(currentCookieValue);
-  console.log('props', props);
+  function deleteMirageFromCart(mirage) {
+    const deletedMirage = mirage;
+    console.log('tell', deletedMirage);
+    const filteredMirageList = props.mirages.filter(
+      (element) => element.id !== deletedMirage.id,
+    );
+    setStringifiedCookie('cookies', filteredMirageList);
+    // deleteMirageFromCart();
+  }
+
+  console.log(currentCookieValue);
+  //console.log('props', props);
   return (
     <>
       <Head>
@@ -33,8 +49,8 @@ export default function Cart(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Cart</h1>
-
+      <h1>Cart ({totalItemsInCart})</h1>
+      <h2>Total price (μ€): {totalPriceInCart}</h2>
       {props.mirages.map((mirage) => {
         return (
           <div key={`mirage-${mirage.id}`} css={mirageStyles}>
@@ -50,15 +66,22 @@ export default function Cart(props) {
             <div>Number of items: 🔮 {mirage.counts} </div>
             <div>Price per item (μ€): {mirage.price}</div>
             <div>Total per all items (μ€): {mirage.price * mirage.counts}</div>
+            <br></br>
+            <button
+              onClick={() => {
+                deleteMirageFromCart(mirage);
+              }}
+            >
+              Remove
+            </button>
           </div>
         );
       })}
-      <h2>Total price (μ€): </h2>
     </>
   );
 }
 
-export async function getServerSideProps(context) {
+export function getServerSideProps(context) {
   const cookie = context.req.cookies.cookies;
   console.log('cookie', cookie);
   console.log('mirages', mirages);

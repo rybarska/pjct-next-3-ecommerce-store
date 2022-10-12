@@ -4,16 +4,8 @@ import CookieBanner from '../components/CookieBanner';
 import Layout from '../components/Layout';
 import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 
-/* useEffect(() => {
-  function setAllCookies(cookies) {
-  const [cookieState, setCookieState] = useState(0);
-  const currentCookieValue = getParsedCookie(cookies);
-}
-}, [cookies]) */
-
 function MyApp({ Component, pageProps, props }) {
   const [cookieState, setCookieState] = useState();
-  //const [updatedCookies, setUpdatedCookies] = useState();
 
   console.log(cookieState);
 
@@ -35,13 +27,6 @@ function MyApp({ Component, pageProps, props }) {
     }
     setAllCookies();
   }, [cookieState]);
-
-  /* useEffect(() => {
-    function setAllCookies(cookies) {
-      const [cookieState, setCookieState] = useState(0);
-      const currentCookieValue = getParsedCookie(cookies);
-    }
-  }, [cookies]); */
 
   return (
     <>
