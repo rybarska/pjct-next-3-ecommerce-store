@@ -95,35 +95,38 @@ export default function Mirage(props) {
         onClick={() => {
           // getting the value of the cookie counts
           const currentCookieValue = getParsedCookie('cookies');
-
-          // if there is no cookie we initialize the value with a 1
+          // if there is no cookie I initialize the value with amount
           if (!currentCookieValue) {
             setStringifiedCookie('cookies', [
               { id: props.foundMirage.id, counts: amount },
             ]);
+
+            setAmount(0);
+            location.reload();
             return;
-          }
-
-          // find the object that match the id of the page
-          const foundCookie = currentCookieValue.find(
-            (cookieMirageObject) =>
-              cookieMirageObject.id === props.foundMirage.id,
-          );
-
-          // if a object is not found i add a new object
-          if (!foundCookie) {
-            currentCookieValue.push({
-              id: props.foundMirage.id,
-              counts: amount,
-            });
           } else {
-            // if a object is found i update the counts
-            foundCookie.counts = foundCookie.counts + amount;
+            // find the object that match the id of the page
+            const foundCookie = currentCookieValue.find(
+              (cookieMirageObject) =>
+                cookieMirageObject.id === props.foundMirage.id,
+            );
+
+            // if a object is not found i add a new object
+            if (!foundCookie) {
+              currentCookieValue.push({
+                id: props.foundMirage.id,
+                counts: amount,
+              });
+            } else {
+              // if a object is found i update the counts
+              foundCookie.counts = foundCookie.counts + amount;
+            }
           }
           // set the new value of the cookie
           setStringifiedCookie('cookies', currentCookieValue);
           props.setCookieState(currentCookieValue);
           setAmount(0);
+          location.reload();
         }}
       >
         <img

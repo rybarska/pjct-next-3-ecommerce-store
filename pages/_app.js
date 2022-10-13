@@ -7,16 +7,18 @@ import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 function MyApp({ Component, pageProps, props }) {
   const [cookieState, setCookieState] = useState();
 
-  console.log(cookieState);
+  console.log('say cookie state', cookieState);
 
   // this is to update state on first render when state is empty
   useEffect(() => {
     const currentCookieValue = getParsedCookie('cookies');
     setCookieState(currentCookieValue);
+    console.log('say currentCookieValue', currentCookieValue);
+    console.log("say getParsedCookie('cookies')", getParsedCookie('cookies'));
   }, []);
 
   // to update the cookie every time state changes
-  // this shiuld run every time cookieState is updated
+  // this should run every time cookieState is updated
   useEffect(() => {
     function setAllCookies() {
       // do this only if cookie state is defined

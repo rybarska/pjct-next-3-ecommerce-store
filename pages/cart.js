@@ -3,8 +3,21 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import CheckoutButton from '../components/CheckoutButton';
 import { mirages } from '../database/mirages';
 import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
+
+// areItemsInCart is a Boolean
+const checkoutButtonStyles = (areItemsInCart) => css`
+  padding: 5px;
+
+  ${!areItemsInCart &&
+  css`
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+  `};
+`;
 
 const mirageStyles = css`
   border-radius: 15px;
@@ -21,7 +34,11 @@ const mirageStyles = css`
 `;
 
 export default function Cart(props) {
-  const currentCookieValue = getParsedCookie('cookies');
+  const [areItemsInCart, setAreItemsInCart] = useState(false);
+  const [currentCookies, setCurrentCookies] = useState(
+    getParsedCookie('cookies'),
+  );
+
   const totalItemsInCart = props.cookieState
     ? props.cookieState.reduce(function (previousValue, currentValue) {
         return previousValue + currentValue.counts;
@@ -29,18 +46,39 @@ export default function Cart(props) {
     : 0;
   const totalPriceInCart = totalItemsInCart * 999999;
 
+  useEffect(() => {
+    //setCurrentCookies(getParsedCookie('cookies'));
+  }, [currentCookies]);
+
   function deleteMirageFromCart(mirage) {
     const deletedMirage = mirage;
     console.log('tell', deletedMirage);
     const filteredMirageList = props.mirages.filter(
       (element) => element.id !== deletedMirage.id,
     );
+    console.log('tell filtered list', filteredMirageList);
+
+    setCurrentCookies(filteredMirageList);
+    console.log('tell current cookies', currentCookies);
     setStringifiedCookie('cookies', filteredMirageList);
+    console.log('active');
+    location.reload();
     // deleteMirageFromCart();
   }
-
-  console.log(currentCookieValue);
+  console.log('say current cookies', currentCookies);
   //console.log('props', props);
+
+  // This is only happening in the browser
+  useEffect(() => {
+    if (totalItemsInCart > 0) {
+      setAreItemsInCart(true);
+      return;
+    } else {
+      setAreItemsInCart(false);
+      return;
+    }
+  }, []);
+
   return (
     <>
       <Head>
@@ -48,9 +86,16 @@ export default function Cart(props) {
         <meta name="description" content="Overview of the mirages" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <h1>Cart ({totalItemsInCart})</h1>
       <h2>Total price (μ€): {totalPriceInCart}</h2>
+      <br></br>
+      <CheckoutButton>Checkout</CheckoutButton>
+      <div css={checkoutButtonStyles(areItemsInCart)}>
+        <button>
+          <Link href="/checkout">Checkout</Link>
+        </button>
+      </div>
+      <br></br>
       {props.mirages.map((mirage) => {
         return (
           <div key={`mirage-${mirage.id}`} css={mirageStyles}>
