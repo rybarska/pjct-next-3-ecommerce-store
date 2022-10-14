@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import Link from 'next/link';
-import CheckoutButton from './CheckoutButton';
 
 const navStyles = css`
   background-color: #e4c0fc;

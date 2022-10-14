@@ -3,21 +3,8 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import CheckoutButton from '../components/CheckoutButton';
 import { mirages } from '../database/mirages';
 import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
-
-// areItemsInCart is a Boolean
-const checkoutButtonStyles = (areItemsInCart) => css`
-  padding: 5px;
-
-  ${!areItemsInCart &&
-  css`
-    height: 0;
-    padding: 0;
-    overflow: hidden;
-  `};
-`;
 
 const mirageStyles = css`
   border-radius: 15px;
@@ -33,8 +20,22 @@ const mirageStyles = css`
   }
 `;
 
+// areItemsInCart is a Boolean
+const checkoutButtonStyles = (areItemsInCart) => css`
+  padding: 5px;
+
+  ${!areItemsInCart &&
+  css`
+    height: 0;
+    padding: 0;
+    text-decoration: none;
+    overflow: hidden;
+  `};
+`;
+
 export default function Cart(props) {
   const [areItemsInCart, setAreItemsInCart] = useState(false);
+
   const [currentCookies, setCurrentCookies] = useState(
     getParsedCookie('cookies'),
   );
@@ -68,7 +69,6 @@ export default function Cart(props) {
   console.log('say current cookies', currentCookies);
   //console.log('props', props);
 
-  // This is only happening in the browser
   useEffect(() => {
     if (totalItemsInCart > 0) {
       setAreItemsInCart(true);
@@ -78,6 +78,16 @@ export default function Cart(props) {
       return;
     }
   }, []);
+
+  useEffect(() => {
+    if (totalItemsInCart > 0) {
+      setAreItemsInCart(true);
+      return;
+    } else {
+      setAreItemsInCart(false);
+      return;
+    }
+  }, [{ totalItemsInCart }]);
 
   return (
     <>
@@ -89,7 +99,6 @@ export default function Cart(props) {
       <h1>Cart ({totalItemsInCart})</h1>
       <h2>Total price (μ€): {totalPriceInCart}</h2>
       <br></br>
-      <CheckoutButton>Checkout</CheckoutButton>
       <div css={checkoutButtonStyles(areItemsInCart)}>
         <button>
           <Link href="/checkout">Checkout</Link>
