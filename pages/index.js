@@ -11,14 +11,17 @@ export default function Home() {
       </Head>
 
       <div>Home</div>
-              <a>
-                <Image
-                  src={`/eye.png`}
-                  alt="eye with colors"
-                  width="400"
-                  height="200"
-                />
-              </a>
+      <div>
+        <h1>Welcome to the Mirage Machine</h1>
+      </div>
+      <a>
+        <Image
+          src={`/eye.png`}
+          alt="eye with colors"
+          width="480"
+          height="240"
+        />
+      </a>
     </>
   );
 }

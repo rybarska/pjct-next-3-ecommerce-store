@@ -36,12 +36,13 @@ export default function Mirages(props) {
       {props.mirages.map((mirage) => {
         return (
           <div key={`mirage-${mirage.id}`} css={mirageStyles}>
-            <h2>
-              <Link href={`/mirages/${mirage.id}`}>{mirage.name}</Link>
-            </h2>
-
-            <Link href={`/mirages/${mirage.id}`}>
+            <Link
+              href={`/mirages/${mirage.id}`}
+              data-test-id="product-<product id>"
+            >
               <a>
+                {' '}
+                <h2>{mirage.name}</h2>
                 <Image
                   src={`/${mirage.id}-${mirage.name.toLowerCase()}.jpeg`}
                   alt=""

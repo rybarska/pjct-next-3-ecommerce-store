@@ -1,4 +1,16 @@
+import { css } from '@emotion/react';
 import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+
+const checkoutButtonStyles = css`
+  padding: 5px;
+  background-color: #e4c0fc;
+  border-radius: 6px;
+  line-height: 40px;
+  width: 120px;
+  font-weight: bold;
+`;
 
 export default function Checkout(props) {
   const totalItemsInCart = props.cookieState
@@ -21,6 +33,7 @@ export default function Checkout(props) {
       <form
         onSubmit={(event) => {
           event.preventDefault();
+          window.location.href = '/thankYou';
         }}
       >
         <label>
@@ -68,7 +81,12 @@ export default function Checkout(props) {
         </label>
         <br></br>
         <br></br>
-        <button>Confirm Order</button>
+        <button
+          css={checkoutButtonStyles}
+          data-test-id="checkout-confirm-order"
+        >
+          Confirm Order
+        </button>
       </form>
     </div>
   );

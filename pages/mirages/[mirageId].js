@@ -20,6 +20,17 @@ const mirageStyles = css`
   }
 `;
 
+const addToCartStyles = css`
+  background-color: #e4c0fc;
+  border-radius: 6px;
+  margin-top: 20px;
+  padding: 10px;
+  font-weight: bold;
+  > a + a {
+    margin-left: 13px;
+  }
+`;
+
 export default function Mirage(props) {
   if (props.error) {
     return (
@@ -34,7 +45,7 @@ export default function Mirage(props) {
       </div>
     );
   }
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
 
   const totalPrice = props.foundMirage.price * amount;
 
@@ -49,8 +60,9 @@ export default function Mirage(props) {
           content={`${props.foundMirage.name} costs ${props.foundMirage.price} and this is the description ${props.foundMirage.description}`}
         />
       </Head>
-      <h2>{props.foundMirage.name}</h2>
+      <h1>{props.foundMirage.name}</h1>
       <Image
+        data-test-id="product-image"
         src={`/${
           props.foundMirage.id
         }-${props.foundMirage.name.toLowerCase()}.jpeg`}
@@ -58,7 +70,7 @@ export default function Mirage(props) {
         width="600"
         height="400"
       />
-      <div>Id: {props.foundMirage.id}</div>
+      {/* <div>Id: {props.foundMirage.id}</div> */}
       <div>Description: {props.foundMirage.description}</div>
       <br></br>
       <div>Price (μ€): {props.foundMirage.price}</div>
@@ -69,10 +81,10 @@ export default function Mirage(props) {
       <div>
         <button
           onClick={() => {
-            if (amount === 0) {
+            if (amount === 1) {
               return;
             }
-            if (amount > 0) {
+            if (amount > 1) {
               setAmount(amount - 1);
             }
           }}
@@ -89,9 +101,9 @@ export default function Mirage(props) {
           +{' '}
         </button>
       </div>
-      <br></br>
-      <br></br>
+
       <button
+        css={addToCartStyles}
         onClick={() => {
           // getting the value of the cookie counts
           const currentCookieValue = getParsedCookie('cookies');
@@ -101,7 +113,7 @@ export default function Mirage(props) {
               { id: props.foundMirage.id, counts: amount },
             ]);
 
-            setAmount(0);
+            setAmount(1);
             location.reload();
             return;
           } else {
@@ -125,19 +137,11 @@ export default function Mirage(props) {
           // set the new value of the cookie
           setStringifiedCookie('cookies', currentCookieValue);
           props.setCookieState(currentCookieValue);
-          setAmount(0);
+          setAmount(1);
           location.reload();
         }}
       >
-        <img
-          height="50px"
-          width="75px"
-          src={`/${
-            props.foundMirage.id
-          }-${props.foundMirage.name.toLowerCase()}.jpeg`}
-          alt="mirage displayed on add to cart button"
-        />
-        <br></br>Add to Cart
+        Add to Cart
       </button>
     </div>
   );

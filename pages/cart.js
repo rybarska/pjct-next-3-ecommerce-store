@@ -21,14 +21,32 @@ const mirageStyles = css`
 `;
 
 // areItemsInCart is a Boolean
-const checkoutButtonStyles = (areItemsInCart) => css`
+const checkoutStyles = (areItemsInCart) => css`
   padding: 5px;
+  background-color: #f4e8fc;
+  color: #13011f;
+  border-radius: 6px;
 
   ${!areItemsInCart &&
   css`
     height: 0;
     padding: 0;
-    text-decoration: none;
+    overflow: hidden;
+  `};
+`;
+
+const checkoutButtonStyles = (areItemsInCart) => css`
+  padding: 5px;
+  background-color: #e4c0fc;
+  border-radius: 6px;
+  line-height: 40px;
+  width: 120px;
+  font-weight: bold;
+
+  ${!areItemsInCart &&
+  css`
+    height: 0;
+    padding: 0;
     overflow: hidden;
   `};
 `;
@@ -97,12 +115,13 @@ export default function Cart(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>Cart ({totalItemsInCart})</h1>
-      <h2>Total price (μ€): {totalPriceInCart}</h2>
-      <br></br>
-      <div css={checkoutButtonStyles(areItemsInCart)}>
-        <button>
+      <div css={checkoutStyles(areItemsInCart)}>
+        <h2>Total price (μ€): {totalPriceInCart}</h2>
+
+        <button css={checkoutButtonStyles}>
           <Link href="/checkout">Checkout</Link>
         </button>
+        <br></br>
       </div>
       <br></br>
       {props.mirages.map((mirage) => {

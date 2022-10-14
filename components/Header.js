@@ -23,8 +23,9 @@ export default function Header(props) {
     <header>
       <nav css={navStyles}>
         <Link href="/">Home</Link>
-        <Link href="/mirages">Mirages</Link>
-        <Link href="/fruits">Fruits</Link>
+        <Link href="/mirages" data-test-id="products-link">
+          Mirages
+        </Link>
         <Link href="/cart">Cart </Link>({totalItemsInCart})
       </nav>
     </header>
