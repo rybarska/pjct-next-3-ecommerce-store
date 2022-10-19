@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { mirages } from '../../database/mirages';
+import { getMirageById, Mirage } from '../../database/mirages';
+import { parseIntFromContextQuery } from '../../utils/contextQuery';
 import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
 
 const mirageStyles = css`
@@ -30,9 +32,16 @@ const addToCartStyles = css`
     margin-left: 13px;
   }
 `;
+type Props =
+  | {
+      mirage: Mirage;
+    }
+  | {
+      error: string;
+    };
 
-export default function Mirage(props) {
-  if (props.error) {
+export default function SingleMirage(props: Props) {
+  if ('error' in props) {
     return (
       <div>
         <Head>
@@ -47,33 +56,31 @@ export default function Mirage(props) {
   }
   const [amount, setAmount] = useState(1);
 
-  const totalPrice = props.foundMirage.price * amount;
+  const totalPrice = props.mirage.price * amount;
 
   return (
     <div css={mirageStyles}>
       <Head>
         <title>
-          {props.foundMirage.name}, the {props.foundMirage.type}
+          {props.mirage.name}, the {props.mirage.type}
         </title>
         <meta
           name="description"
-          content={`${props.foundMirage.name} costs ${props.foundMirage.price} and this is the description ${props.foundMirage.description}`}
+          content={`${props.mirage.name} costs ${props.mirage.price} and this is the description ${props.mirage.description}`}
         />
       </Head>
-      <h1>{props.foundMirage.name}</h1>
+      <h1>{props.mirage.name}</h1>
       <Image
         data-test-id="product-image"
-        src={`/${
-          props.foundMirage.id
-        }-${props.foundMirage.name.toLowerCase()}.jpeg`}
+        src={`/${props.mirage.id}-${props.mirage.name.toLowerCase()}.jpeg`}
         alt=""
         width="600"
         height="400"
       />
-      {/* <div>Id: {props.foundMirage.id}</div> */}
-      <div>Description: {props.foundMirage.description}</div>
+      {/* <div>Id: {props.mirage.id}</div> */}
+      <div>Description: {props.mirage.description}</div>
       <br></br>
-      <div>Price (μ€): {props.foundMirage.price}</div>
+      <div>Price (μ€): {props.mirage.price}</div>
       <div>Total price (μ€): {totalPrice}</div>
       <br></br>
       <div>Amount:</div>
@@ -110,7 +117,7 @@ export default function Mirage(props) {
           // if there is no cookie I initialize the value with amount
           if (!currentCookieValue) {
             setStringifiedCookie('cookies', [
-              { id: props.foundMirage.id, counts: amount },
+              { id: props.mirage.id, counts: amount },
             ]);
 
             setAmount(1);
@@ -119,14 +126,13 @@ export default function Mirage(props) {
           } else {
             // find the object that match the id of the page
             const foundCookie = currentCookieValue.find(
-              (cookieMirageObject) =>
-                cookieMirageObject.id === props.foundMirage.id,
+              (cookieMirageObject) => cookieMirageObject.id === props.mirage.id,
             );
 
             // if a object is not found i add a new object
             if (!foundCookie) {
               currentCookieValue.push({
-                id: props.foundMirage.id,
+                id: props.mirage.id,
                 counts: amount,
               });
             } else {
@@ -147,9 +153,20 @@ export default function Mirage(props) {
   );
 }
 
-export function getServerSideProps(context) {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<GetServerSidePropsResult<Props>> {
   // Retrieve the mirage ID from the URL
-  const mirageId = parseInt(context.query.mirageId);
+  const mirageId = parseIntFromContextQuery(context.query.mirageId);
+
+  if (typeof mirageId === 'undefined') {
+    context.res.statusCode = 404;
+    return {
+      props: {
+        error: 'Mirage not found',
+      },
+    };
+  }
 
   // Finding the mirage
   //
@@ -159,9 +176,10 @@ export function getServerSideProps(context) {
   // like PostgreSQL will allow you to do this
   // in a nicer way.
 
-  const foundMirage = mirages.find((mirage) => {
+  /* const foundMirage = mirages.find((mirage) => {
     return mirage.id === mirageId;
-  });
+  }); */
+  const foundMirage = await getMirageById(mirageId);
 
   if (typeof foundMirage === 'undefined') {
     context.res.statusCode = 404;
@@ -174,7 +192,7 @@ export function getServerSideProps(context) {
 
   return {
     props: {
-      foundMirage: foundMirage,
+      mirage: foundMirage,
     },
   };
 }

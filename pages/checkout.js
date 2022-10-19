@@ -2,6 +2,8 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 
 const checkoutButtonStyles = css`
   padding: 5px;
@@ -13,12 +15,24 @@ const checkoutButtonStyles = css`
 `;
 
 export default function Checkout(props) {
+  /* const [cookieState, setCookieState] = useState(props.cookieState);
+  useEffect(() => {}, []); */
+
+  useEffect(() => {
+    function setCheckoutCookies() {
+      const newCookieValue = props.cookieState;
+      setStringifiedCookie('cookies', newCookieValue);
+    }
+    setCheckoutCookies();
+  }, [props.cookieState]);
+
   const totalItemsInCart = props.cookieState
     ? props.cookieState.reduce(function (previousValue, currentValue) {
         return previousValue + currentValue.counts;
       }, 0)
     : 0;
   const totalPriceInCart = totalItemsInCart * 999999;
+
   return (
     <div>
       <Head>
@@ -34,6 +48,7 @@ export default function Checkout(props) {
         onSubmit={(event) => {
           event.preventDefault();
           window.location.href = '/thankYou';
+          props.setCookieState();
         }}
       >
         <label>

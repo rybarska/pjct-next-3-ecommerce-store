@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { mirages } from '../../database/mirages';
+import { getMirages, Mirage } from '../../database/mirages';
+//import { mirages } from '../../database/mirages';
 import { getParsedCookie, setStringifiedCookie } from '../../utils/cookies';
 
 const mirageStyles = css`
@@ -19,6 +21,10 @@ const mirageStyles = css`
     margin-top: 25px;
   }
 `;
+
+type Props = {
+  mirages: Mirage[];
+};
 
 export default function Mirages(props) {
   const [amount, setAmount] = useState(0);
@@ -66,8 +72,11 @@ export default function Mirages(props) {
 //
 // Note: this function can only be exported
 // from files within pages/
-export function getServerSideProps() {
-  console.log('mirages', mirages);
+export async function getServerSideProps(): Promise<
+  GetServerSidePropsResult<Props>
+> {
+  const mirages = await getMirages();
+  //console.log('mirages', mirages);
   return {
     // Anything that you write in this props object
     // will become the props that are passed to
@@ -76,7 +85,7 @@ export function getServerSideProps() {
       // First prop, containing all animals
       mirages: mirages,
       // Second prop, example
-      abc: 123,
+      //abc: 123,
     },
   };
 }
