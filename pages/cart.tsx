@@ -5,8 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getMirageById, getMirages, Mirage } from '../database/mirages';
-import { parseIntFromContextQuery } from '../utils/contextQuery';
+import { getMirages, Mirage } from '../database/mirages';
 import { getParsedCookie, setStringifiedCookie } from '../utils/cookies';
 
 const mirageStyles = css`
@@ -51,6 +50,7 @@ type Props =
   | {
       mirage: Mirage;
       mirages: Mirage[];
+      totalItemsInCart: number;
       //id?: number;
       //cookieState?: string[];
       //counts?: string[];
@@ -69,9 +69,7 @@ export default function Cart(props: Props) {
   const [currentCookieValue, setCurrentCookieValue] = useState(
     getParsedCookie('cookies'),
   );
-  console.log('say currentCookieValue', currentCookieValue);
-  console.log('say', props);
-  console.log('say props.mirage', props.mirage);
+
   if ('error' in props) {
     return (
       <div>
@@ -86,19 +84,14 @@ export default function Cart(props: Props) {
     );
   }
   const router = useRouter();
-  console.log('say props.mirage', props.mirage);
-  if (!currentCookieValue) {
-  } else {
-    const foundCookie = currentCookieValue.find(
-      (cookieMirageObject) => cookieMirageObject.id === props.mirage.id,
-    );
-  }
 
-  const totalItemsInCart = props.cookieState
+  const totalItemsInCart = props.totalItemsInCart;
+  /* = props.cookieState
     ? props.cookieState.reduce(function (previousValue, currentValue) {
         return previousValue + currentCookieValue.counts;
       }, 0)
-    : 0;
+    : 0; */
+  //console.log('say totalItemsInCart', totalItemsInCart);
   const totalPriceInCart = totalItemsInCart * 999999;
 
   useEffect(() => {
@@ -197,77 +190,38 @@ export default function Cart(props: Props) {
   );
 }
 
-/* export function getServerSideProps(context) {
-  const cookie = context.req.cookies.cookies;
-  console.log('cookie', cookie);
-  console.log('mirages', mirages);
-
-  const cookieArray = cookie ? JSON.parse(cookie) : [];
-  const cartArray = cookieArray.map((array) => {
-    const cartObject = mirages.find((mirage) => mirage.id === array.id); */
-
 export async function getServerSideProps(
   context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<Props>> {
-  // Retrieve the mirage ID from the URL
-  //const mirageId = parseIntFromContextQuery(context.query.mirageId);
-  let foundMirage;
-  const mirageFromCookies = context.req.cookies.cookies
-    ? JSON.parse(context.req.cookies.cookies)
-    : [];
-  console.log('say mirageFromCookies', mirageFromCookies);
-  foundMirage = mirageFromCookies.map((element: any) => {
-    return getMirageById(element.id);
-  });
-  console.log('say foundMirage', foundMirage);
-  console.log('say context.req.cookies', context.req.cookies);
-
-  //const mirage = await getMirageById(id);
-  console.log('say context.query', context.query);
-  foundMirage = await getMirageById(1);
-  console.log('say foundMirage', foundMirage);
+  const cookie = context.req.cookies.cookies;
   const mirages = await getMirages();
 
-  if (typeof foundMirage === 'undefined') {
-    context.res.statusCode = 404;
-    return {
-      props: {
-        error: 'Mirage not found',
-      },
-    };
-  }
+  const cookieArray = cookie ? JSON.parse(cookie) : [];
 
-  /* if (typeof mirageId === 'undefined') {
-    context.res.statusCode = 404;
+  const cartArray = cookieArray.map((array) => {
+    const cartObject = mirages.find((mirage) => mirage.id === array.id);
     return {
-      props: {
-        error: 'Mirage not found',
-      },
+      id: cartObject!.id,
+      name: cartObject!.name,
+      price: cartObject!.price,
+      counts: array.counts,
     };
-  }
-  if (typeof mirages === 'undefined') {
-    context.res.statusCode = 404;
-    return {
-      props: {
-        error: 'Mirage not found',
-      },
-    };
-  }
-*/
-  /* return {
-    id: cartObject.id,
-    name: cartObject.name,
-    price: cartObject.price,
-    counts: array.counts,
-  };
-  //}); */
+  });
+
+  console.log('say cartArray', cartArray);
+
+  const backendTotalItemsInCart = cartArray
+    ? cartArray.reduce(function (previousValue, currentValue) {
+        return previousValue + currentValue.counts;
+      }, 0)
+    : 0;
+
+  console.log('say backendTotalItemsInCart', backendTotalItemsInCart);
 
   return {
     props: {
-      mirages: mirages,
-      mirage: foundMirage,
-      //mirageId: mirageId,
-      //id: id,
+      mirages: cartArray,
+      totalItemsInCart: backendTotalItemsInCart,
     },
   };
 }

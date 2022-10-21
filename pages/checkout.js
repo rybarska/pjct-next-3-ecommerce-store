@@ -48,7 +48,7 @@ export default function Checkout(props) {
         onSubmit={(event) => {
           event.preventDefault();
           window.location.href = '/thankYou';
-          props.setCookieState();
+          props.setCookieState([]);
         }}
       >
         <label>
