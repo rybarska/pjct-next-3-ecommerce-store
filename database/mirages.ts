@@ -65,6 +65,7 @@ export type Mirage = {
   name: string;
   price: number;
   description: string;
+  counts: number;
 };
 
 // Get all mirages

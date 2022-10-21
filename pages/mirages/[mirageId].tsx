@@ -35,6 +35,9 @@ const addToCartStyles = css`
 type Props =
   | {
       mirage: Mirage;
+      cookieState?: string[];
+      amount?: number;
+      cookieMirageObject?: string[];
     }
   | {
       error: string;
@@ -61,9 +64,7 @@ export default function SingleMirage(props: Props) {
   return (
     <div css={mirageStyles}>
       <Head>
-        <title>
-          {props.mirage.name}, the {props.mirage.type}
-        </title>
+        <title>{props.mirage.name}</title>
         <meta
           name="description"
           content={`${props.mirage.name} costs ${props.mirage.price} and this is the description ${props.mirage.description}`}
@@ -119,7 +120,6 @@ export default function SingleMirage(props: Props) {
             setStringifiedCookie('cookies', [
               { id: props.mirage.id, counts: amount },
             ]);
-
             setAmount(1);
             location.reload();
             return;

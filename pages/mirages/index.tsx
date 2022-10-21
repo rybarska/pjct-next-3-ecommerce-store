@@ -26,7 +26,7 @@ type Props = {
   mirages: Mirage[];
 };
 
-export default function Mirages(props) {
+export default function Mirages(props: Props) {
   const [amount, setAmount] = useState(0);
   console.log('props', props);
   return (
