@@ -22,6 +22,7 @@ export default function Home() {
           height="240"
         />
       </a>
+      <h2>We have been waiting for you for quite a while</h2>
     </>
   );
 }
