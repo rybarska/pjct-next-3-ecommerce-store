@@ -9,7 +9,7 @@ export default function ThankYou() {
       <Head>
         <title>Thank You</title>
         <meta name="description" content="Say Thank You" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.ico" />
       </Head>
       <h1>Thank you for your order</h1>
       <br></br>

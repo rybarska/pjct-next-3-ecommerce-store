@@ -34,7 +34,7 @@ export default function Mirages(props: Props) {
       <Head>
         <title>Mirages</title>
         <meta name="description" content="Overview of the mirages" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.ico" />
       </Head>
 
       <h1>Mirages</h1>

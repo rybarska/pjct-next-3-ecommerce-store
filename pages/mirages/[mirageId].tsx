@@ -50,7 +50,7 @@ export default function SingleMirage(props: Props) {
         <Head>
           <title>Mirage not found</title>
           <meta name="description" content="Mirage not found" />
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/images/favicon.ico" />
         </Head>
         <h1>{props.error}</h1>
         Sorry, try the <Link href="/mirages">mirages page</Link>

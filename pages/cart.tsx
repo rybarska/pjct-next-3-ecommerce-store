@@ -146,7 +146,7 @@ export default function Cart(props: Props) {
       <Head>
         <title>Cart</title>
         <meta name="description" content="Overview of the mirages" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.ico" />
       </Head>
       <h1>Cart ({totalItemsInCart})</h1>
       <div css={checkoutStyles(areItemsInCart)}>

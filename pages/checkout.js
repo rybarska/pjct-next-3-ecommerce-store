@@ -38,7 +38,7 @@ export default function Checkout(props) {
       <Head>
         <title>Checkout</title>
         <meta name="description" content="Checkout" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.ico" />
       </Head>
       <h1>Checkout</h1>
       <h2>Total number of items: {totalItemsInCart}</h2>
